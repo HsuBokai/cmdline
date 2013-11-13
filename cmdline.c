@@ -73,3 +73,15 @@ void print_cmd(Cmdline* obj) {
 	printf("end of array\n");
 }
 
+void exec_cmd(Cmdline* obj, int index) {
+	char* command[16];
+	GArray* a = obj->_cmds;
+	int i;
+	for (i = 0; i < a->len && i<15; i++) {
+		command[i] = g_array_index(a, char*, i);
+	}
+	command[i] = 0;
+	execv(command[index], command+index);
+	return;
+}
+

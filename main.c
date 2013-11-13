@@ -68,7 +68,22 @@ int main(int argc, char *argv[])
 				my_cat(get_cmd(cmdline,1));
 			}
 			else  printf("less args\n");
-		}		
+		}
+		else if(strcmp(get_cmd(cmdline,0),"exec")==0) {
+			if(get_size(cmdline)<2) printf("less args\n");
+
+			printf("before vfork pid = %d\n",getpid());
+			pid_t child_pid = vfork();
+			if(child_pid==0) {
+				printf("child pid = %d\n", getpid());
+				exec_cmd(cmdline, 1);
+				exit(0);
+			}
+			else {
+				waitpid(child_pid, NULL, 0);
+				printf("after fork pid = %d\n",getpid());
+			}
+		}
 		else if(strcmp(get_cmd(cmdline,0),"exit")==0) {
 			break;
 		}

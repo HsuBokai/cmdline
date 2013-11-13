@@ -9,4 +9,5 @@ void delete_Cmdline(Cmdline* obj);
 char* get_cmd(Cmdline* obj, int index);
 int get_size(Cmdline* obj);
 void print_cmd(Cmdline* obj);
+void exec_cmd(Cmdline* obj, int index);
 #endif
