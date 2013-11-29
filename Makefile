@@ -1,6 +1,6 @@
 IDIR =./include
 CC=gcc
-CFLAGS=-I$(IDIR) `pkg-config --cflags --libs glib-2.0`
+CFLAGS= -g -Wall -I$(IDIR) `pkg-config --cflags --libs glib-2.0`
 
 ODIR=obj
 LDIR =./lib

@@ -1,34 +1,14 @@
 #include "utils.h"
 
 #include <stdio.h>
-#include <string.h>
-#include <dirent.h>
-#include <fcntl.h>
 #include <stdlib.h>
+#include <string.h>
 
-int parse_input(char input[], char* command[], char cut_point)
-{
-	int num_command = 0;
-	char* pch, *src;
-	src = input;
-	pch=strchr(src,' ');
+#include <fcntl.h> // for open
+#include <unistd.h> // for close
+#include <dirent.h>
 
-	while (pch!=NULL) {
-		size_t len = pch-src;
-		if(len>0) {
-			command[num_command] = (char*)malloc(sizeof(char)*len);
-			memcpy(command[num_command], src, len+1);
-			command[num_command++][len]='\0';
-		}
-		src = pch+1;
-		pch=strchr(src, cut_point);
-	}
-	if(src!=NULL) {
-		command[num_command++] = src;
-	}
-	return num_command;
-}
-
+#include <sys/stat.h> // for mkdir
 
 unsigned str2num(const char* buf) {
 	int i = 0;
@@ -60,22 +40,6 @@ void num2str(unsigned num, char ret[]) {
 }
 
 
-void print_to_log(char head[], const char* content)
-{
-	char command[100];
-	strcpy(command,head);
-	strcat(command, content);
-	strcat(command, " >> /opt/VDP/log ");
-	system(command);
-}
-
-void print_num_to_log(char head[], unsigned num)
-{
-	char pid_num[64];
-	num2str(num, pid_num);
-	print_to_log(head, pid_num);
-}
-
 void my_copy(const char* src, const char *bakfile) {
 	printf("src = %s -> dst = %s\n", src, bakfile);
 	char buff[1024]; 
@@ -92,30 +56,7 @@ void my_copy(const char* src, const char *bakfile) {
 	close(fd1);
 	close(fd2);
 }
-/*
-   int load_dir(const char* s, const char* d) {
-   DIR* dp = opendir(s);
-   if(dp!=NULL) {
-   struct dirent* ent;
-   while((ent = readdir(dp))!=NULL) {
-   if(ent->d_type == 8)
-   {
-   char src_path[64], dst_path[64];
-   strcpy(src_path, s);
-   strcat(src_path, "/");
-   strcat(src_path, ent->d_name);
-   strcpy(dst_path, d);
-   strcat(dst_path, "/");
-   strcat(dst_path, ent->d_name);
-   my_copy(src_path, dst_path);
-   }
-//printf("the ent->d_reclen is%d the ent->d_type is%d the ent->d_name is%s\n", ent->d_reclen, ent->d_type, ent->d_name);  
-}
-closedir(dp);
-}
-return 0;
-}
- */
+
 int my_ls_all(const char* dir) {
 	DIR* dp = opendir(dir);
 	if(dp!=NULL) {

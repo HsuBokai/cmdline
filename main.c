@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 	printf("helloworld is running !!! \n");
 	print_usage();
 
-	int ret = -1;
+	int ret = 0;
 	printf(">> ");
 	char input[128];
 	while(gets(input)){
@@ -85,12 +85,13 @@ int main(int argc, char *argv[])
 			}
 		}
 		else if(strcmp(get_cmd(cmdline,0),"exit")==0) {
+			delete_Cmdline(cmdline);
 			break;
 		}
 
 __func_end: 
-		printf(">> ");
 		delete_Cmdline(cmdline);
+		printf(">> ");
 	}
 
 	return 0;
