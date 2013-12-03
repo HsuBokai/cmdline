@@ -1,7 +1,7 @@
 #ifndef _Cmdline_H_
 #define _Cmdline_H_
 
-#define MAX_LEN 16
+#define MAX_LEN 64
 
 typedef struct _Cmdline Cmdline;
 Cmdline* new_Cmdline(char input[], char cut_point);

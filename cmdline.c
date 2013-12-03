@@ -40,7 +40,7 @@ Cmdline* new_Cmdline(char input[], char cut_point) {
 		char* newline = (char*)calloc(len+1, sizeof(char));
 		memcpy(newline, src, len);
 		newline[len]='\0';
-fprintf(stderr, "%p\n", newline);
+//fprintf(stderr, "%p\n", newline);
 		//g_array_append_val(re->_cmds, newline);
 		re->_cmds[re->len++] = newline;
 	}
@@ -55,7 +55,7 @@ void delete_Cmdline(Cmdline* obj) {
 	for (i = 0; i < obj->len; ++i) {
 		//char* newline = g_array_index(a, char*, i);
 		char* newline = obj->_cmds[i];
-fprintf(stderr, "%p\n", newline);
+//fprintf(stderr, "%p\n", newline);
 		free(newline);
 	}
 	//g_array_free(obj->_cmds, FALSE);
