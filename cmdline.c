@@ -12,11 +12,10 @@ struct _Cmdline {
 	int len;
 };
 
-Cmdline* new_Cmdline(char input[], char cut_point) {
-	Cmdline* re = (Cmdline*) malloc(sizeof(Cmdline));
+void init(Cmdline* re, char input[], char cut_point)
+{
 	//re->_cmds = g_array_new(FALSE, FALSE, sizeof(char*));
 	//g_array_ref(re->_cmds);
-
 	char* pch, *src;
 	src = input;
 	pch=strchr(src, cut_point);
@@ -44,22 +43,36 @@ Cmdline* new_Cmdline(char input[], char cut_point) {
 		//g_array_append_val(re->_cmds, newline);
 		re->_cmds[re->len++] = newline;
 	}
-	//delete_Cmdline(re);
+}
+
+Cmdline* new_Cmdline(char input[], char cut_point) {
+	Cmdline* re = (Cmdline*) malloc(sizeof(Cmdline));
+	init(re, input, cut_point);
 	return re;
 }
 
-void delete_Cmdline(Cmdline* obj) {
+
+
+void reset(Cmdline* obj)
+{
 	//GArray* a = obj->_cmds;
 	//fprintf(stderr, "len = %d\n", a->len);
 	int i;
 	for (i = 0; i < obj->len; ++i) {
 		//char* newline = g_array_index(a, char*, i);
-		char* newline = obj->_cmds[i];
-//fprintf(stderr, "%p\n", newline);
-		free(newline);
+		if(obj->_cmds[i] != NULL) {
+			free(obj->_cmds[i]);
+			obj->_cmds[i] = NULL;
+		}
 	}
 	//g_array_free(obj->_cmds, FALSE);
+}
+
+
+void delete_Cmdline(Cmdline* obj) {
+	reset(obj);
 	free(obj);
+	obj = NULL;
 }
 /*
 void push_cmd(Cmdline* obj, const char* y) {
@@ -100,3 +113,67 @@ void exec_cmd(Cmdline* obj, int index) {
 	return;
 }
 
+
+#define ARGV "argv\n"
+int write_file(Cmdline* obj, char info_file_path[]) {
+#ifdef DEBUG
+	fprintf(stderr, "in cmdline:write_file\n"); //debug
+#endif
+	//check executable command file exist
+	int s = obj->len;
+	if(s<1) return -1;
+
+	FILE* fPtr = fopen(info_file_path, "w+");
+	if (!fPtr) {
+		printf("open write_file fail...\n");
+		return -1;
+	}
+
+	fprintf(fPtr, ARGV);
+	int i = 0;
+	for(i=0; i<s; ++i) {
+		char* argv = obj->_cmds[i];
+		if(argv==NULL) {
+			fprintf(stderr, "argv NULL\n"); //debug
+			fclose(fPtr);
+			return -1;
+		}
+		fprintf(fPtr, "%s ", argv);
+	}
+	fprintf(fPtr, "\n");
+	fclose(fPtr);
+	return 0;
+}
+
+
+int read_file(Cmdline* obj, char info_file_path[])
+{
+#ifdef DEBUG
+	fprintf(stderr, "in cmdline:read_file\n"); //debug
+#endif
+	FILE* fPtr = fopen(info_file_path, "r");
+	if (!fPtr) {
+		printf("open read_file fail...\n");
+		return -1;
+	}
+	reset(obj);
+
+	char line[64];
+	while(fgets(line, 64, fPtr)!=NULL){
+		if(strcmp(line, ARGV)==0) {
+			char argv[1024];
+			if(fgets(argv, 1024, fPtr)!=NULL) 
+			{
+				fprintf(stderr, "%s\n", argv);
+				init(obj, argv, ' ');
+				break;
+			}
+			//int i = 0;
+			//for(i=0; i<MAX_PASSWORD_SIZE; ++i) {
+			//	fscanf(fPtr, "%i", (unsigned int*)(password+i));
+			//}
+		}
+	}
+	fclose(fPtr);
+	return 0;
+}

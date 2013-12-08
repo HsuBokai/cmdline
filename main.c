@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 	printf("helloworld is running !!! \n");
 	print_usage();
 
-	int ret = 0;
+	//int ret = 0;
 	printf(">> ");
 	char input[128];
 	while(gets(input)){
@@ -69,6 +69,16 @@ int main(int argc, char *argv[])
 			}
 			else  printf("less args\n");
 		}
+
+		else if(strcmp(get_cmd(cmdline,0),"write_file")==0) {
+			write_file(cmdline, "./test_file");
+		}
+		else if(strcmp(get_cmd(cmdline,0),"read_file")==0) {
+			Cmdline* another_cmdline = new_Cmdline("",' ');
+			read_file(another_cmdline, "./test_file");
+			delete_Cmdline(another_cmdline);
+		}
+
 		else if(strcmp(get_cmd(cmdline,0),"exec")==0) {
 			if(get_size(cmdline)<2) printf("less args\n");
 
