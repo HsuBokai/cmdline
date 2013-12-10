@@ -12,7 +12,7 @@ struct _Cmdline {
 	int len;
 };
 
-void init(Cmdline* re, char input[], char cut_point)
+void init_cmdline(Cmdline* re, char input[], char cut_point)
 {
 	//re->_cmds = g_array_new(FALSE, FALSE, sizeof(char*));
 	//g_array_ref(re->_cmds);
@@ -47,7 +47,7 @@ void init(Cmdline* re, char input[], char cut_point)
 
 Cmdline* new_Cmdline(char input[], char cut_point) {
 	Cmdline* re = (Cmdline*) malloc(sizeof(Cmdline));
-	init(re, input, cut_point);
+	init_cmdline(re, input, cut_point);
 	return re;
 }
 
@@ -179,7 +179,7 @@ int read_file(Cmdline* obj, char info_file_path[])
 			if(fgets(argv, 1024, fPtr)!=NULL) 
 			{
 				fprintf(stderr, "%s\n", argv);
-				init(obj, argv, ' ');
+				init_cmdline(obj, argv, ' ');
 				break;
 			}
 			//int i = 0;
