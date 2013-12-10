@@ -80,6 +80,20 @@ void push_cmd(Cmdline* obj, const char* y) {
 }
 
 */
+void set_cmd(Cmdline* obj, int i, char src[]) {
+	if(obj->_cmds[i] != NULL) {
+		free(obj->_cmds[i]);
+		obj->_cmds[i] = NULL;
+	}
+	unsigned int len = strlen(src);
+	char* newline = (char*)calloc(len+1, sizeof(char));
+	memcpy(newline, src, len);
+	newline[len]='\0';
+	//g_array_append_val(re->_cmds, newline);
+	obj->_cmds[i] = newline;
+	return;
+}
+
 char* get_cmd(Cmdline* obj, int index) {
 	//return g_array_index(obj->_cmds, char*, index);
 	return obj->_cmds[index];

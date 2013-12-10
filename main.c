@@ -76,6 +76,9 @@ int main(int argc, char *argv[])
 		else if(strcmp(get_cmd(cmdline,0),"read_file")==0) {
 			Cmdline* another_cmdline = new_Cmdline("",' ');
 			read_file(another_cmdline, "./test_file");
+			fprintf(stderr, "before set_cmd() cmds[0]=%s\n", get_cmd(another_cmdline,0));
+			set_cmd(another_cmdline, 0, "bokai hahahaha!! ya!!");
+			fprintf(stderr, "after set_cmd() cmds[0]=%s\n", get_cmd(another_cmdline,0));
 			delete_Cmdline(another_cmdline);
 		}
 

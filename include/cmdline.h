@@ -8,6 +8,7 @@ Cmdline* new_Cmdline(char input[], char cut_point);
 void delete_Cmdline(Cmdline* obj);
 
 //void push_cmd(Cmdline* obj, const char* y);
+void set_cmd(Cmdline* obj, int i, char src[]);
 char* get_cmd(Cmdline* obj, int index);
 int get_size(Cmdline* obj);
 void print_cmd(Cmdline* obj);
