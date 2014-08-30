@@ -2,7 +2,7 @@ IDIR =./include
 CC=gcc
 CFLAGS= -g -Wall -I$(IDIR) `pkg-config --cflags --libs glib-2.0`
 
-ODIR=obj
+ODIR=.
 LDIR =./lib
 
 _DEPS = cmdline.h utils.h
